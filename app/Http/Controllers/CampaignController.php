@@ -19,7 +19,7 @@ class CampaignController extends Controller
 
         $campaigns = Campaign::where(function($query) use ($request): void {
             foreach ($request->all() as $key => $value) {
-                $query->where($key, $value);
+                $query->where($key, 'LIKE', "%{$value}%");
             }
         })
         ->orderBy($sort_field, $order)
