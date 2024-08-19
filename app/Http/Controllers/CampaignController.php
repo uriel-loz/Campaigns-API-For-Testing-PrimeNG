@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Campaign;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CampaignController extends Controller
 {
@@ -30,6 +31,54 @@ class CampaignController extends Controller
         ->paginate($request->size, ['*'], 'page', $request->page);
 
         return response()->json($campaigns);
+    }
+
+    public function store(Request $request) : object
+    {
+        try {
+            Validator::make($request->all(), [
+                'campaign_name' => 'required|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
+            ])->validate();
+
+            $campaign = Campaign::create($request->all());
+
+            return response()->json($campaign, 201);
+
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 400);
+        }
+    }
+
+    public function show(Campaign $campaign) : object
+    {
+        return response()->json($campaign);
+    }
+
+    public function update(Request $request, Campaign $campaign) : object
+    {
+        try {
+            Validator::make($request->all(), [
+                'campaign_name' => 'required|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
+            ])->validate();
+
+            $campaign->update($request->all());
+
+            return response()->json($campaign);
+
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 400);
+        }
+    }
+
+    public function destroy(Campaign $campaign) : object
+    {
+        $campaign->delete();
+
+        return response()->json(['message' => 'Campaign deleted successfully']);
     }
 
     private function convertToArrayFilter($filters) : array

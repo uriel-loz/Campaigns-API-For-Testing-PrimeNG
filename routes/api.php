@@ -10,4 +10,8 @@ Route::get('/user', function (Request $request) {
 
 Route::controller(CampaignController::class)->group(function () {
     Route::get('/campaigns', 'index');
+    Route::post('/campaigns', 'store');
+    Route::get('/campaigns/{campaign}', 'show');
+    Route::put('/campaigns/{campaign}', 'update');
+    Route::delete('/campaigns/{campaign}', 'destroy');
 });
