@@ -20,7 +20,7 @@ class CampaignController extends Controller
         $order = $request->order < 0 ? 'desc': 'asc';
         $filters = $request->filters ?? [];
 
-        $filters = $this->convertToArrayFilter($filters);
+        $filters = convertToArrayFilter($filters);
 
         $campaigns = Campaign::where(function($query) use ($filters): void {
             foreach ($filters as $key => $value) {
@@ -32,6 +32,31 @@ class CampaignController extends Controller
 
         return response()->json($campaigns);
     }
+
+    // public function index(Request $request) : object
+    // {
+    //     // $request->validate([
+    //     //     'page' => 'integer|min:1',
+    //     //     'size' => 'integer|min:1',
+    //     //     'sort_field' => 'string',
+    //     //     'order' => 'integer',
+    //     // ]);
+
+    //     $order = 1 ? 'desc': 'asc';
+    //     $filters = $request->filters ?? [];
+
+    //     $filters = convertToArrayFilter($filters);
+
+    //     $campaigns = Campaign::where(function($query) use ($filters): void {
+    //         foreach ($filters as $key => $value) {
+    //             $query->where($key, 'LIKE', "%{$value}%");
+    //         }
+    //     })
+    //     // ->orderBy($request->sort_field, $order)
+    //     ->paginate(10, ['*'], 'page', 1);
+
+    //     return response()->json($campaigns);
+    // }
 
     public function store(Request $request) : object
     {
@@ -79,22 +104,5 @@ class CampaignController extends Controller
         $campaign->delete();
 
         return response()->json(['message' => 'Campaign deleted successfully']);
-    }
-
-    private function convertToArrayFilter($filters) : array
-    {
-        if (!$filters) 
-            return [];
-
-        $all_filters = [];
-
-        $input_filters = array_values(array_filter(explode('&', $filters)));
-            
-        foreach ($input_filters as $filter) {
-            list($field, $value) = explode('=', $filter);
-            $all_filters[$field] = $value;
-        }
-
-        return $all_filters;
     }
 }
