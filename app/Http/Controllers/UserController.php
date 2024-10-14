@@ -8,16 +8,41 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    // public function index(Request $request) : object
+    // {
+    //     $request->validate([
+    //         'page' => 'integer|min:1',
+    //         'size' => 'integer|min:1',
+    //         'sort_field' => 'string',
+    //         'order' => 'integer',
+    //     ]);
+
+    //     $order = $request->order < 0 ? 'desc': 'asc';
+    //     $filters = $request->filters ?? [];
+
+    //     $filters = convertToArrayFilter($filters);
+
+    //     $campaigns = User::where(function($query) use ($filters): void {
+    //         foreach ($filters as $key => $value) {
+    //             $query->where($key, 'LIKE', "%{$value}%");
+    //         }
+    //     })
+    //     ->orderBy($request->sort_field, $order)
+    //     ->paginate($request->size, ['*'], 'page', $request->page);
+
+    //     return response()->json($campaigns);
+    // }
+
     public function index(Request $request) : object
     {
-        $request->validate([
-            'page' => 'integer|min:1',
-            'size' => 'integer|min:1',
-            'sort_field' => 'string',
-            'order' => 'integer',
-        ]);
+        // $request->validate([
+        //     'page' => 'integer|min:1',
+        //     'size' => 'integer|min:1',
+        //     'sort_field' => 'string',
+        //     'order' => 'integer',
+        // ]);
 
-        $order = $request->order < 0 ? 'desc': 'asc';
+        $order = 'desc';
         $filters = $request->filters ?? [];
 
         $filters = convertToArrayFilter($filters);
@@ -27,8 +52,8 @@ class UserController extends Controller
                 $query->where($key, 'LIKE', "%{$value}%");
             }
         })
-        ->orderBy($request->sort_field, $order)
-        ->paginate($request->size, ['*'], 'page', $request->page);
+        ->orderBy('id', $order)
+        ->paginate(10, ['*'], 'page', 1);
 
         return response()->json($campaigns);
     }
