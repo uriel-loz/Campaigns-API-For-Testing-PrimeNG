@@ -6,12 +6,9 @@ function convertToArrayFilter($filters) : array
         return [];
 
     $all_filters = [];
-
-    $input_filters = array_values(array_filter(explode('&', $filters)));
         
-    foreach ($input_filters as $filter) {
-        list($field, $value) = explode('=', $filter);
-        $all_filters[$field] = $value;
+    foreach ($filters as $key => $filter) {
+        $all_filters[$key] = $filter;
     }
 
     return $all_filters;
