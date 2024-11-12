@@ -18,7 +18,7 @@ class CampaignController extends Controller
         ]);
 
         $order = $request->order < 0 ? 'desc': 'asc';
-        $filters = $request->filters ?? [];
+        $filters = json_decode($request->filters, true) ?? [];
 
         $filters = convertToArrayFilter($filters);
 
@@ -35,12 +35,12 @@ class CampaignController extends Controller
 
     // public function index(Request $request) : object
     // {
-    //     // $request->validate([
-    //     //     'page' => 'integer|min:1',
-    //     //     'size' => 'integer|min:1',
-    //     //     'sort_field' => 'string',
-    //     //     'order' => 'integer',
-    //     // ]);
+    //     $request->validate([
+    //         'page' => 'integer|min:1',
+    //         'size' => 'integer|min:1',
+    //         'sort_field' => 'string',
+    //         'order' => 'integer',
+    //     ]);
 
     //     $order = 1 ? 'desc': 'asc';
     //     $filters = $request->filters ?? [];
